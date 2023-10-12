@@ -1,8 +1,15 @@
 package dev.ram.prosuctServicettseveninga.controllers;
 
+import dev.ram.prosuctServicettseveninga.dtos.GetSingleProductResponseDto;
 import dev.ram.prosuctServicettseveninga.dtos.ProductDto;
+import dev.ram.prosuctServicettseveninga.models.Product;
 import dev.ram.prosuctServicettseveninga.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.Authenticator;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -14,18 +21,24 @@ public class ProductController {
     }
 
     @GetMapping()
-    public String getAllProducts(){
-        return "get All Products";
+    public List<Product> getAllProducts(){
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{productId}")
-    public String getSingleProduct(@PathVariable("productId") Long productId){
-        return "Return Single Product id: "+productId;
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId){
+        ResponseEntity<Product> response = new ResponseEntity(
+                productService.getSingleProduct(productId),
+                HttpStatus.OK
+        );
+        return response;
     }
 
     @PostMapping()
-    public String addNewProduct(@RequestBody ProductDto productDto){
-        return "Adding new Product" +productDto;
+    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
+        Product newProduct = productService.addNewProduct(productDto);
+        ResponseEntity<Product> response = new ResponseEntity<>(newProduct, HttpStatus.OK);
+        return response;
     }
 
     @PutMapping("/{productId}")

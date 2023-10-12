@@ -10,5 +10,5 @@ import java.util.List;
 public class Category extends BaseModel {
     private String name;
     private String description;
-    private List<Products> products;
+    private List<Product> products;
 }

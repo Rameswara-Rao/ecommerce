@@ -1,15 +1,14 @@
 package dev.ram.prosuctServicettseveninga.services;
 
 import dev.ram.prosuctServicettseveninga.dtos.ProductDto;
-import org.springframework.web.bind.annotation.*;
+import dev.ram.prosuctServicettseveninga.models.Product;
+
+import java.util.List;
 
 public interface ProductService {
-    String getAllProducts();
-
-    String getSingleProduct(Long productId);
-
-    String addNewProduct(ProductDto productDto);
-    String updateProduct(Long productId);
-
-    String deleteProduct(Long productId);
+    List<Product> getAllProducts();
+    Product getSingleProduct(Long productId);
+    Product addNewProduct(ProductDto product);
+    Product updateProduct(Long productId, Product product);
+    boolean deleteProduct(Long productId);
 }
