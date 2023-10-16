@@ -6,6 +6,7 @@ import dev.ram.prosuctServicettseveninga.dtos.ProductDto;
 import dev.ram.prosuctServicettseveninga.exeptions.NotFoundException;
 import dev.ram.prosuctServicettseveninga.models.Category;
 import dev.ram.prosuctServicettseveninga.models.Product;
+import dev.ram.prosuctServicettseveninga.repostories.ProductRepository;
 import dev.ram.prosuctServicettseveninga.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,11 @@ import java.util.Optional;
 @RequestMapping("/products")
 public class ProductController {
     private ProductService productService;
+    private ProductRepository productRepository;
 
-    public ProductController(ProductService productService){
+    public ProductController(ProductService productService, ProductRepository productRepository){
         this.productService = productService;
+        this.productRepository = productRepository;
     }
 
     @GetMapping()
@@ -43,8 +46,17 @@ public class ProductController {
     }
 
     @PostMapping()
-    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
-        Product newProduct = productService.addNewProduct(productDto);
+    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto product){
+//        Product newProduct = productService.addNewProduct(product);
+
+        Product newProduct = new Product();
+        newProduct.setDescription(product.getDescription());
+        newProduct.setImageUrl(product.getImage());
+        newProduct.setTitle(product.getTitle());
+        newProduct.setPrice(product.getPrice());
+
+        newProduct = productRepository.save(newProduct);
+
         ResponseEntity<Product> response = new ResponseEntity<>(newProduct, HttpStatus.OK);
         return response;
     }
